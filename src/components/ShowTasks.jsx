@@ -6,22 +6,13 @@ import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArro
 import EditIcon from '@mui/icons-material/Edit'
 import AddIcon from '@mui/icons-material/Add'
 import { changeStatus } from "../redux/tasks.slice"
-import { useEffect, useState } from "react"
-import { useDispatch, useSelector } from "react-redux"
-import { useParams } from "react-router-dom"
+import { useState } from "react"
+import { useDispatch } from "react-redux"
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 
 const ShowTasks = ({ status, tasks, setOpenAddTaskDialog, setOpenDeletionDialog, setOpenEditTaskDialog, setTaskToDelete, settaskToAddStatus, setTaskToEdit }) => {
 
     const dispatch = useDispatch()
-
-    const { id } = useParams()
-    const projects = useSelector((store) => store.projects.projects)
-    const [project, setProject] = useState({})
-
-    useEffect(() => {
-        setProject(projects.find((p) => p.id === Number(id)))
-    }, [id])
 
     const [expanded, setExpanded] = useState(false);
 
@@ -82,7 +73,7 @@ const ShowTasks = ({ status, tasks, setOpenAddTaskDialog, setOpenDeletionDialog,
                                 <CardHeader
                                     action={
                                         <Tooltip title={`Change Status`} arrow>
-                                            <IconButton edge="end" sx={{ mr: 1 }} onClick={(e) => handleClick(e, t.taskID)}>
+                                            <IconButton edge="end" sx={{ mr: 1 }} onClick={(e) => handleClick(e, t._id)}>
                                                 <MoreVertIcon />
                                             </IconButton>
                                             <Menu
@@ -125,12 +116,12 @@ const ShowTasks = ({ status, tasks, setOpenAddTaskDialog, setOpenDeletionDialog,
 
                                 <CardActions disableSpacing sx={{ justifyContent: 'flex-end' }}>
                                     <Tooltip title="Delete task" arrow>
-                                        <IconButton aria-label="delete" onClick={() => { setTaskToDelete(t.taskID); setOpenDeletionDialog(true) }}>
+                                        <IconButton aria-label="delete" onClick={() => { setTaskToDelete(t._id); setOpenDeletionDialog(true) }}>
                                             <DeleteIcon />
                                         </IconButton>
                                     </Tooltip>
                                     <Tooltip title="Edit task's details" arrow>
-                                        <IconButton aria-label="edit" onClick={() => { setTaskToEdit(t.taskID); setOpenEditTaskDialog(true) }}>
+                                        <IconButton aria-label="edit" onClick={() => { setTaskToEdit(t._id); setOpenEditTaskDialog(true) }}>
                                             <EditIcon />
                                         </IconButton>
                                     </Tooltip>

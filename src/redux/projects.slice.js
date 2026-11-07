@@ -1,54 +1,37 @@
-import { createSlice } from "@reduxjs/toolkit"
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
+import * as api from "../api"
 
-const initValue={
-    projects: [
-        {
-            id: 101,
-            name: "Corporate Website Redesign",
-            description: "Modernizing the main landing page with a focus on user engagement and responsive design.",
-            date: "2026-02-01" 
-        },
-        {
-            id: 102,
-            name: "Mobile App Launch",
-            description: "Preparation for the iOS and Android release, including store assets and final QA.",
-            date: "2026-02-15"
-        },
-        {
-            id: 103,
-            name: "Marketing Campaign Q1",
-            description: "Social media outreach and email newsletter automation for the upcoming spring sale.",
-            date: "2026-01-20"
-        },
-        {
-            id: 104,
-            name: "Internal Dashboard System",
-            description: "Building an analytics tool for the HR department to track employee performance metrics.",
-            date: "2026-02-25"
-        }
-    ]}
+export const fetchProjects = createAsyncThunk("projects/fetch", () => api.get("/projects"))
 
-const projectsSlice=createSlice({
-    name:"projects",
-    initialState:initValue,
-    reducers:{
-        addProject:(state,actions)=>{
-            state.projects.push(actions.payload)
-        },
-        removeProject:(state,actions)=>{
-            state.projects=state.projects.filter(p=>p.id!=actions.payload)
-        },
-        updateProject:(state, actions) => {
-            const { id, name, description } = actions.payload;
-            state.projects = state.projects.map(p =>
-                p.id === id ? { ...p,
-                    ...(name !== undefined ? { name } : {}),
-                    ...(description !== undefined ? { description } : {})
-                } : p
-            );
-        }
+export const addProject = createAsyncThunk("projects/add", (project) => api.post("/projects", project))
+
+export const updateProject = createAsyncThunk("projects/update", ({ id, name, description }) =>
+    api.put(`/projects/${id}`, { name, description }))
+
+export const removeProject = createAsyncThunk("projects/remove", async (id) => {
+    await api.del(`/projects/${id}`)
+    return id
+})
+
+const projectsSlice = createSlice({
+    name: "projects",
+    initialState: { projects: [] },
+    reducers: {},
+    extraReducers: (builder) => {
+        builder
+            .addCase(fetchProjects.fulfilled, (state, action) => {
+                state.projects = action.payload
+            })
+            .addCase(addProject.fulfilled, (state, action) => {
+                state.projects.push(action.payload)
+            })
+            .addCase(updateProject.fulfilled, (state, action) => {
+                state.projects = state.projects.map(p => p._id === action.payload._id ? action.payload : p)
+            })
+            .addCase(removeProject.fulfilled, (state, action) => {
+                state.projects = state.projects.filter(p => p._id !== action.payload)
+            })
     }
 })
 
-export const {addProject,removeProject,updateProject}=projectsSlice.actions
 export default projectsSlice.reducer

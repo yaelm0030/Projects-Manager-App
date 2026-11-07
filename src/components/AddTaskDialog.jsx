@@ -1,6 +1,5 @@
 import { addTask } from '../redux/tasks.slice'
-import { useDispatch, useSelector } from 'react-redux';
-import { tasksRNPromotion } from '../redux/tasksRunningNum.slice'
+import { useDispatch } from 'react-redux';
 import { Fragment } from 'react';
 import { MenuItem, Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
@@ -8,7 +7,6 @@ import { Controller, useForm } from 'react-hook-form';
 const AddTaskDialog = ({ open, status, setOpenAddTaskDialog, projectID }) => {
 
     const dispatch = useDispatch()
-    const curID = useSelector((stor) => stor.tasksRN.currentID)
 
     const handleCloseDialog = () => {
         setOpenAddTaskDialog(true);
@@ -20,21 +18,19 @@ const AddTaskDialog = ({ open, status, setOpenAddTaskDialog, projectID }) => {
             desc: "",
             status: status,
             deadline: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-            priority: "Low"
+            priority: "low"
         }
     })
 
     const onSubmit = (data) => {
         dispatch(addTask({
-            projectID: projectID,
-            taskID: curID,
+            projectId: projectID,
             name: data.name,
             description: data.desc,
             status: status,
             priority: data.priority,
             deadline: data.deadline
         }))
-        dispatch(tasksRNPromotion())
         reset()
         setOpenAddTaskDialog(false)
     }

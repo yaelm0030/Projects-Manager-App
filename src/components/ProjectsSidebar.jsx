@@ -19,9 +19,9 @@ const ProjectsSidebar = ({ open, setOpen }) => {
                     <Typography variant="h6" sx={{ color:'#f68934', mb: 2 }}>Your Projects:</Typography>
                     <List>
                         {projects.map((p, index) => (
-                            <ListItem key={p.id} disablePadding>
+                            <ListItem key={p._id} disablePadding>
                                 <ListItemButton>
-                                    <Link to={`/show-projects/${p.id}`}
+                                    <Link to={`/show-projects/${p._id}`}
                                         style={{ textDecoration: 'none', color: 'inherit', width: '100%' }}>{p.name}</Link>
                                 </ListItemButton>
                             </ListItem>

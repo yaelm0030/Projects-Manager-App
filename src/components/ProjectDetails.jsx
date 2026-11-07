@@ -28,7 +28,7 @@ const ProjectDetails = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const proj = projects.find((p) => p.id === Number(id));
+    const proj = projects.find((p) => p._id === id);
     setProject(proj || {});
     setNameValue(proj?.name || '');
     setDescValue(proj?.description || '');
@@ -62,7 +62,7 @@ const ProjectDetails = () => {
             onChange={e => setNameValue(e.target.value)}
             onBlur={() => {
               if (nameValue.trim() && nameValue !== project.name) {
-                dispatch(updateProject({ id: project.id, name: nameValue }));
+                dispatch(updateProject({ id: project._id, name: nameValue }));
               }
               setEditingName(false);
             }}
@@ -95,7 +95,7 @@ const ProjectDetails = () => {
             onChange={e => setDescValue(e.target.value)}
             onBlur={() => {
               if (descValue.trim() && descValue !== project.description) {
-                dispatch(updateProject({ id: project.id, description: descValue }));
+                dispatch(updateProject({ id: project._id, description: descValue }));
               }
               setEditingDesc(false);
             }}
@@ -137,11 +137,11 @@ const ProjectDetails = () => {
         </BottomNavigation>
         <Box sx={{ width: "100%", border: "1px solid #072134", padding: 2, borderRadius: 0.7, minHeight: "60vh", height: "100%" }}>
             {<EditTaskDialog open={openEditTaskDialog} taskID={taskToEdit} setOpenEditTaskDialog={setOpenEditTaskDialog} />}
-            {<AddTaskDialog open={openAddTaskDialog} status={taskToAddStatus} setOpenAddTaskDialog={setOpenAddTaskDialog} projectID={project.id} />}
+            {<AddTaskDialog open={openAddTaskDialog} status={taskToAddStatus} setOpenAddTaskDialog={setOpenAddTaskDialog} projectID={project._id} />}
             {<DeletionDialog open={openDeletionDialog} taskToDelete={taskToDelete} setOpenDeletionDialog={setOpenDeletionDialog} />}
-            {value == 0 && <ShowTasks status={"To Do"} tasks={tasks.filter((t) => t.status === "To Do" && t.projectID === project.id)} setOpenAddTaskDialog={setOpenAddTaskDialog} setOpenDeletionDialog={setOpenDeletionDialog} setOpenEditTaskDialog={setOpenEditTaskDialog} setTaskToDelete={setTaskToDelete} settaskToAddStatus={settaskToAddStatus} setTaskToEdit={setTaskToEdit} />}
-            {value == 1 && <ShowTasks status={"In Progress"} tasks={tasks.filter((t) => t.status === "In Progress" && t.projectID === project.id)} setOpenAddTaskDialog={setOpenAddTaskDialog} setOpenDeletionDialog={setOpenDeletionDialog} setOpenEditTaskDialog={setOpenEditTaskDialog} setTaskToDelete={setTaskToDelete} settaskToAddStatus={settaskToAddStatus} setTaskToEdit={setTaskToEdit} />}
-            {value == 2 && <ShowTasks status={"Done"} tasks={tasks.filter((t) => t.status === "Done" && t.projectID === project.id)} setOpenAddTaskDialog={setOpenAddTaskDialog} setOpenDeletionDialog={setOpenDeletionDialog} setOpenEditTaskDialog={setOpenEditTaskDialog} setTaskToDelete={setTaskToDelete} settaskToAddStatus={settaskToAddStatus} setTaskToEdit={setTaskToEdit} />}
+            {value == 0 && <ShowTasks status={"To Do"} tasks={tasks.filter((t) => t.status === "To Do" && t.projectId === project._id)} setOpenAddTaskDialog={setOpenAddTaskDialog} setOpenDeletionDialog={setOpenDeletionDialog} setOpenEditTaskDialog={setOpenEditTaskDialog} setTaskToDelete={setTaskToDelete} settaskToAddStatus={settaskToAddStatus} setTaskToEdit={setTaskToEdit} />}
+            {value == 1 && <ShowTasks status={"In Progress"} tasks={tasks.filter((t) => t.status === "In Progress" && t.projectId === project._id)} setOpenAddTaskDialog={setOpenAddTaskDialog} setOpenDeletionDialog={setOpenDeletionDialog} setOpenEditTaskDialog={setOpenEditTaskDialog} setTaskToDelete={setTaskToDelete} settaskToAddStatus={settaskToAddStatus} setTaskToEdit={setTaskToEdit} />}
+            {value == 2 && <ShowTasks status={"Done"} tasks={tasks.filter((t) => t.status === "Done" && t.projectId === project._id)} setOpenAddTaskDialog={setOpenAddTaskDialog} setOpenDeletionDialog={setOpenDeletionDialog} setOpenEditTaskDialog={setOpenEditTaskDialog} setTaskToDelete={setTaskToDelete} settaskToAddStatus={settaskToAddStatus} setTaskToEdit={setTaskToEdit} />}
         </Box>
     </Box>
   );

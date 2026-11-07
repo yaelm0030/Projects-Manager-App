@@ -46,7 +46,7 @@ const ShowProjects = () => {
                 <Box sx={{ mt: 8, display: 'flex', flexWrap: 'wrap', gap: 7, justifyContent: 'space-between' }}>
                     {projects.map((p, index) => (
                         <Card
-                            key={p.id}
+                            key={p._id}
                             sx={{
                                 padding: 5,
                                 width: 345,
@@ -78,7 +78,7 @@ const ShowProjects = () => {
                                 }}
                             />
                             <CardContent sx={{ flex: 1 }}>
-                                <Link to={`/show-projects/${p.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                                <Link to={`/show-projects/${p._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                                     <Typography gutterBottom variant="h5">
                                         {p.name}
                                     </Typography>
@@ -90,7 +90,7 @@ const ShowProjects = () => {
 
                             <Box sx={{ p: 2, pt: 0, display: 'flex', justifyContent: 'center' }}>
                                 <Button
-                                    onClick={() => DeleteProject(p.id)}
+                                    onClick={() => DeleteProject(p._id)}
                                     size="large"
                                     color="secondary"
                                 >

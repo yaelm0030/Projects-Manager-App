@@ -1,9 +1,8 @@
 import { Button, Stack, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { addProject } from '../redux/projects.slice'
-import { projectsRNPromotion } from '../redux/projectsRunningNum.slice'
 import { useNavigate } from 'react-router-dom';
 import { Controller, useForm } from 'react-hook-form';
 
@@ -11,7 +10,6 @@ import { Controller, useForm } from 'react-hook-form';
 const AddProject = () => {
 
     const dispatch = useDispatch()
-    const curID = useSelector((stor) => stor.projectsRN.currentID)
     const nav = useNavigate()
 
     const { control, handleSubmit, reset } = useForm({
@@ -21,14 +19,11 @@ const AddProject = () => {
         },
     });
 
-    const onSubmit = (data) => {
-        dispatch(addProject({
-            id: curID,
+    const onSubmit = async (data) => {
+        await dispatch(addProject({
             name: data.name,
-            description: data.desc,
-            date: new Date().toString()
+            description: data.desc
         }))
-        dispatch(projectsRNPromotion())
         reset()
         nav('/show-projects')
     }

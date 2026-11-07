@@ -1,4 +1,4 @@
-import { setNameDescAndDeadline } from '../redux/tasks.slice'
+import { updateTask } from '../redux/tasks.slice'
 import { useDispatch, useSelector } from 'react-redux';
 import { Fragment, useEffect, useState } from 'react';
 import { MenuItem, Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
@@ -27,7 +27,7 @@ const EditTaskDialog = ({ open, setOpenEditTaskDialog, taskID }) => {
 
     useEffect(() => {
         if (open) {
-            const found = tasks.find((t) => t.taskID === Number(taskID));
+            const found = tasks.find((t) => t._id === taskID);
             if (found) {
                 setTask(found);
                 reset({ name: found.name, desc: found.description, deadline: found.deadline, priority: found.priority });
@@ -36,7 +36,7 @@ const EditTaskDialog = ({ open, setOpenEditTaskDialog, taskID }) => {
     }, [taskID, open, tasks, reset])
 
     const onSubmit = (data) => {
-        dispatch(setNameDescAndDeadline(
+        dispatch(updateTask(
             {
                 id: taskID,
                 name: data.name,

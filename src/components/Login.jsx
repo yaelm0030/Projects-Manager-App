@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { login } from '../redux/user.slice';
 import { Controller, useForm } from 'react-hook-form';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { Button, FormControl, Typography, FormHelperText, InputAdornment, InputLabel, OutlinedInput, IconButton, TextField, Box } from '@mui/material';
@@ -9,7 +10,7 @@ import logo from '../assets/largelogo.png';
 const Login = () => {
 
     const nav = useNavigate()
-    const user = useSelector((store) => store.user)
+    const dispatch = useDispatch()
     const [showPassword, setShowPassword] = useState(false);
     const [illegalUserMassage, setIllegalUserMassage] = useState(false)
 
@@ -29,13 +30,14 @@ const Login = () => {
         }
     })
 
-    const onSubmit = (data) => {
-        if (data.name != user.name || data.password != user.password) {
-            setIllegalUserMassage(true)
-        }
-        else {
+    const onSubmit = async (data) => {
+        const result = await dispatch(login(data))
+        if (login.fulfilled.match(result)) {
             setIllegalUserMassage(false)
             nav('/show-projects')
+        }
+        else {
+            setIllegalUserMassage(true)
         }
     }
 
